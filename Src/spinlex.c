@@ -748,10 +748,14 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 
 	if (has_stack)
 	{	fprintf(fd, "int cpu_printf(const char *, ...);\n");
+		fprintf(fd, "void (*c_stack_before)(uchar *);\n");
+		fprintf(fd, "void (*c_stack_after)(uchar *);\n");
 		fprintf(fd, "void\nc_stack(uchar *p_t_r)\n{\n");
 		fprintf(fd, "#ifdef VERBOSE\n");
 		fprintf(fd, "	cpu_printf(\"c_stack %%u\\n\", p_t_r);\n");
 		fprintf(fd, "#endif\n");
+		fprintf(fd, "\tif (c_stack_before)\n");
+		fprintf(fd, "\t\tc_stack_before(p_t_r);\n");
 		for (r = c_tracked; r; r = r->nxt)
 		{	if (r->ival == ZS) continue;
 	
@@ -763,6 +767,8 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 				r->t->name);
 			fprintf(fd, "\tp_t_r += %s;\n", r->t->name);
 		}
+		fprintf(fd, "\tif (c_stack_after)\n");
+		fprintf(fd, "\t\tc_stack_after(p_t_r);\n");
 		fprintf(fd, "}\n\n");
 	}
 
@@ -796,10 +802,15 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 	fprintf(fd, "}\n");
 
 	if (has_stack)
-	{	fprintf(fd, "void\nc_unstack(uchar *p_t_r)\n{\n");
+	{	
+		fprintf(fd, "void (*c_unstack_before)(uchar *);\n");
+		fprintf(fd, "void (*c_unstack_after)(uchar *);\n");
+		fprintf(fd, "void\nc_unstack(uchar *p_t_r)\n{\n");
 		fprintf(fd, "#ifdef VERBOSE\n");
 		fprintf(fd, "	cpu_printf(\"c_unstack %%u\\n\", p_t_r);\n");
 		fprintf(fd, "#endif\n");
+		fprintf(fd, "\tif (c_unstack_before)\n");
+		fprintf(fd, "\t\tc_unstack_before(p_t_r);\n");
 		for (r = c_tracked; r; r = r->nxt)
 		{	if (r->ival == ZS) continue;
 
@@ -808,6 +819,8 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 				r->s->name, r->t->name);
 			fprintf(fd, "\tp_t_r += %s;\n", r->t->name);
 		}
+		fprintf(fd, "\tif (c_unstack_after)\n");
+		fprintf(fd, "\t\tc_unstack_after(p_t_r);\n");
 		fprintf(fd, "}\n");
 	}
 
