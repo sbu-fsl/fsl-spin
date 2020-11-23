@@ -750,6 +750,8 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 	{	fprintf(fd, "int cpu_printf(const char *, ...);\n");
 		fprintf(fd, "void (*c_stack_before)(uchar *);\n");
 		fprintf(fd, "void (*c_stack_after)(uchar *);\n");
+		fprintf(fd, "void (*c_unstack_before)(uchar *);\n");
+		fprintf(fd, "void (*c_unstack_after)(uchar *);\n");
 		fprintf(fd, "void\nc_stack(uchar *p_t_r)\n{\n");
 		fprintf(fd, "#ifdef VERBOSE\n");
 		fprintf(fd, "	cpu_printf(\"c_stack %%u\\n\", p_t_r);\n");
@@ -758,7 +760,7 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 		fprintf(fd, "\t\tc_stack_before(p_t_r);\n");
 		for (r = c_tracked; r; r = r->nxt)
 		{	if (r->ival == ZS) continue;
-	
+
 			fprintf(fd, "\tif(%s)\n", r->s->name);
 			fprintf(fd, "\t\tmemcpy(p_t_r, %s, %s);\n",
 				r->s->name, r->t->name);
@@ -802,10 +804,7 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 	fprintf(fd, "}\n");
 
 	if (has_stack)
-	{	
-		fprintf(fd, "void (*c_unstack_before)(uchar *);\n");
-		fprintf(fd, "void (*c_unstack_after)(uchar *);\n");
-		fprintf(fd, "void\nc_unstack(uchar *p_t_r)\n{\n");
+	{	fprintf(fd, "void\nc_unstack(uchar *p_t_r)\n{\n");
 		fprintf(fd, "#ifdef VERBOSE\n");
 		fprintf(fd, "	cpu_printf(\"c_unstack %%u\\n\", p_t_r);\n");
 		fprintf(fd, "#endif\n");
