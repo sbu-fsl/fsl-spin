@@ -41,6 +41,7 @@ spin:	makefile $(SPIN_OS) $(TL_OS) spin.o
 
 install: spin
 	$(INSTALL) spin $(DESTDIR)/bin/spin
+	mkdir -p $(DESTDIR)/share/man/man1
 	$(INSTALL) ../Man/spin.1 $(DESTDIR)/share/man/man1/spin.1
 
 spin.o:	makefile spin.y
