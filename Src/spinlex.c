@@ -748,10 +748,10 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 
 	if (has_stack)
 	{	fprintf(fd, "int cpu_printf(const char *, ...);\n");
-		fprintf(fd, "void (*c_stack_before)(uchar *);\n");
-		fprintf(fd, "void (*c_stack_after)(uchar *);\n");
-		fprintf(fd, "void (*c_unstack_before)(uchar *);\n");
-		fprintf(fd, "void (*c_unstack_after)(uchar *);\n");
+		fprintf(fd, "long (*c_stack_before)(uchar *);\n");
+		fprintf(fd, "long (*c_stack_after)(uchar *);\n");
+		fprintf(fd, "long (*c_unstack_before)(uchar *);\n");
+		fprintf(fd, "long (*c_unstack_after)(uchar *);\n");
 		fprintf(fd, "void\nc_stack(uchar *p_t_r)\n{\n");
 		fprintf(fd, "#ifdef VERBOSE\n");
 		fprintf(fd, "	cpu_printf(\"c_stack %%u\\n\", p_t_r);\n");

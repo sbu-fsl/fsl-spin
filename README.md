@@ -30,12 +30,12 @@ theory), partial order reduced, and swarm search (using arbitrarily many cpus).
 /* Called before and after capturing the concrete states.
  * The argument is the pointer to the top of Spin's concrete state stack.
  */
-void (*c_stack_before)(uchar *);
-void (*c_stack_after)(uchar *);
+long (*c_stack_before)(uchar *);
+long (*c_stack_after)(uchar *);
 
 /* Called before and after restoring the concrete states to the c_track
  * pointers */
-void (*c_unstack_before)(uchar *);
-void (*c_unstack_after)(uchar *);
+long (*c_unstack_before)(uchar *);
+long (*c_unstack_after)(uchar *);
 ```
 
