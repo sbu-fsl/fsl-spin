@@ -37,5 +37,17 @@ long (*c_stack_after)(uchar *);
  * pointers */
 long (*c_unstack_before)(uchar *);
 long (*c_unstack_after)(uchar *);
+
+/* Called before and after updating the abstract states.
+ * The argument is the pointer to the top of Spin's abstract state stack.
+ */
+long (*c_update_before)(uchar *);
+long (*c_update_after)(uchar *);
+
+/* Called before and after restoring the abstract states to the c_track
+ * pointers */
+long (*c_revert_before)(uchar *);
+long (*c_revert_after)(uchar *);
+
 ```
 

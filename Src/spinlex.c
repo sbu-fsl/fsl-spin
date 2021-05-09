@@ -746,12 +746,10 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 		return;
 	}
 
+	fprintf(fd, "long (*c_stack_before)(uchar *);\n");
+	fprintf(fd, "long (*c_stack_after)(uchar *);\n");
 	if (has_stack)
 	{	fprintf(fd, "int cpu_printf(const char *, ...);\n");
-		fprintf(fd, "long (*c_stack_before)(uchar *);\n");
-		fprintf(fd, "long (*c_stack_after)(uchar *);\n");
-		fprintf(fd, "long (*c_unstack_before)(uchar *);\n");
-		fprintf(fd, "long (*c_unstack_after)(uchar *);\n");
 		fprintf(fd, "void\nc_stack(uchar *p_t_r)\n{\n");
 		fprintf(fd, "#ifdef VERBOSE\n");
 		fprintf(fd, "	cpu_printf(\"c_stack %%u\\n\", p_t_r);\n");
@@ -774,10 +772,14 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 		fprintf(fd, "}\n\n");
 	}
 
+	fprintf(fd, "long (*c_update_before)(uchar *);\n");
+	fprintf(fd, "long (*c_update_after)(uchar *);\n");
 	fprintf(fd, "void\nc_update(uchar *p_t_r)\n{\n");
 	fprintf(fd, "#ifdef VERBOSE\n");
 	fprintf(fd, "	printf(\"c_update %%p\\n\", p_t_r);\n");
 	fprintf(fd, "#endif\n");
+	fprintf(fd, "\tif (c_update_before)\n");
+	fprintf(fd, "\t\tc_update_before(p_t_r);\n");
 	for (r = c_added; r; r = r->nxt)
 	{	if (strncmp(r->t->name, " Global ", strlen(" Global ")) == 0
 		||  strncmp(r->t->name, " Hidden ", strlen(" Hidden ")) == 0
@@ -801,8 +803,12 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 		fprintf(fd, "\tp_t_r += %s;\n", r->t->name);
 	}
 
+	fprintf(fd, "\tif (c_update_after)\n");
+	fprintf(fd, "\t\tc_update_after(p_t_r);\n");
 	fprintf(fd, "}\n");
 
+	fprintf(fd, "long (*c_unstack_before)(uchar *);\n");
+	fprintf(fd, "long (*c_unstack_after)(uchar *);\n");
 	if (has_stack)
 	{	fprintf(fd, "void\nc_unstack(uchar *p_t_r)\n{\n");
 		fprintf(fd, "#ifdef VERBOSE\n");
@@ -823,10 +829,14 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 		fprintf(fd, "}\n");
 	}
 
+	fprintf(fd, "long (*c_revert_before)(uchar *);\n");
+	fprintf(fd, "long (*c_revert_after)(uchar *);\n");
 	fprintf(fd, "void\nc_revert(uchar *p_t_r)\n{\n");
 	fprintf(fd, "#ifdef VERBOSE\n");
 	fprintf(fd, "	printf(\"c_revert %%p\\n\", p_t_r);\n");
 	fprintf(fd, "#endif\n");
+	fprintf(fd, "\tif (c_revert_before)\n");
+	fprintf(fd, "\t\tc_revert_before(p_t_r);\n");
 	for (r = c_added; r; r = r->nxt)
 	{	if (strncmp(r->t->name, " Global ", strlen(" Global ")) == 0
 		||  strncmp(r->t->name, " Hidden ", strlen(" Hidden ")) == 0
@@ -846,6 +856,8 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 		fprintf(fd, "\tp_t_r += %s;\n", r->t->name);
 	}
 
+	fprintf(fd, "\tif (c_revert_after)\n");
+	fprintf(fd, "\t\tc_revert_after(p_t_r);\n");
 	fprintf(fd, "}\n");
 	fprintf(fd, "#endif\n");
 }
