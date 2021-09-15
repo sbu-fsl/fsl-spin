@@ -5205,6 +5205,8 @@ static const char *Code2d[] = {
 	"int",
 	"main(int argc, char *argv[])",
 	"{	void to_compile(void);\n",
+  "\tpan_argc = argc;\n",
+  "\tpan_argv = argv;\n",
 	"	efd = stderr;	/* default */",
 	"#if defined(BFS_PAR) && defined(BFS_SEP_HASH)",
 	"	uchar used_w = 0;",

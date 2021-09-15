@@ -476,6 +476,8 @@ doless:
 		fprintf(fd_tc, "char *trailfilename;\n");
 	}
 
+	fprintf(fd_tc, "int pan_argc;\n");
+	fprintf(fd_tc, "char **pan_argv;\n");
 	fprintf(fd_tc, "#ifdef LOOPSTATE\n");
 	fprintf(fd_tc, "double cnt_loops;\n");
 	fprintf(fd_tc, "#endif\n");
