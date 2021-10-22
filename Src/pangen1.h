@@ -7213,7 +7213,7 @@ static const char *Code2d[] = {
 	"}",
 	"",
 	"int",
-	"compress(char *vin, int nin)	/* collapse compression */",
+	"spin_compress(char *vin, int nin)	/* collapse compression */",
 	"{	char	*w, *v = (char *) &comp_now;",
 	"	int	i, j;",
 	"	ulong	n;",
@@ -7367,7 +7367,7 @@ static const char *Code2d[] = {
 "#else",	/* !COLLAPSE */
 "#if !defined(NOCOMP)",
 	"int",
-	"compress(char *vin, int n)	/* default compression */",
+	"spin_compress(char *vin, int n)	/* default compression */",
 	"{",
 	"#ifdef HC",
 	"	int delta = 0;",
@@ -7479,7 +7479,7 @@ static const char *Code2d[] = {
 	"	H_tab = S_Tab;",
 	"#ifndef NOCOMP",
 	"	nv = (char *) &comp_now;",
-	"	n = compress((char *)&now, vsize);",
+	"	n = spin_compress((char *)&now, vsize);",
 	"#else",
 		"#if defined(BITSTATE) && defined(LC)",
 	"	nv = (char *) &comp_now;",
@@ -7588,7 +7588,7 @@ static const char *Code2d[] = {
 	"		#endif",
 	"	#else",
 	"		v = (char *) &comp_now;",
-	"		n = compress((char *)&now, vsize);",
+	"		n = spin_compress((char *)&now, vsize);",
 	"	#endif",
 	"	#if !defined(HC) && !(defined(BITSTATE) && defined(LC))",
 	"		s_hash((uchar *)v, n);",
@@ -7729,7 +7729,7 @@ static const char *Code2d[] = {
 	"	uchar *v;",
 	"	static uchar Info[MA+1];",
 	"#ifndef NOCOMP",
-	"	n = compress(vin, nin);",
+	"	n = spin_compress(vin, nin);",
 	"	v = (uchar *) &comp_now;",
 	"#else",
 	"	n = nin;",
@@ -7965,7 +7965,7 @@ static const char *Code2d[] = {
 	"	rem_a = now._a_t;",	/* new 5.0 */
 	"	now._a_t = 0;",	/* for hashing/state matching to work right */
 	"	#endif",
-	"	n = compress(vin, nin);", /* with HC, this calls s_hash -- but on vin, not on v... */
+	"	n = spin_compress(vin, nin);", /* with HC, this calls s_hash -- but on vin, not on v... */
 	"	#ifdef HC",
 	"	now._a_t = rem_a;",	/* new 5.0 */
 	"	#endif",
@@ -8620,7 +8620,7 @@ static const char *Code2d[] = {
 	"	now._l_sds = (uchar *) 0;",
 	"#endif",
 	"#if !defined(HC) && !defined(T_NOCOMP)",
-	"	nin = compress((char *)vin, nin);",
+	"	nin = spin_compress((char *)vin, nin);",
 	"	vin = (char *) &comp_now;",
 	"#endif",
 	"	do {	o_hash((uchar *)vin, nin, seed++);",
