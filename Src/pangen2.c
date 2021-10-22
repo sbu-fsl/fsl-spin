@@ -478,6 +478,8 @@ doless:
 
 	fprintf(fd_tc, "int pan_argc;\n");
 	fprintf(fd_tc, "char **pan_argv;\n");
+    fprintf(fd_tc, "void (*spin_after_argparse)(int argc, char **argv);\n");
+    fprintf(fd_tc, "int absfs_hash_method = 2;\n");
 	fprintf(fd_tc, "#ifdef LOOPSTATE\n");
 	fprintf(fd_tc, "double cnt_loops;\n");
 	fprintf(fd_tc, "#endif\n");
