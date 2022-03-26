@@ -476,6 +476,8 @@ doless:
 		fprintf(fd_tc, "char *trailfilename;\n");
 	}
 
+	fprintf(fd_tc, "char *globals_argv;\n");
+	fprintf(fd_tc, "void (*spin_get_globals)(char *globals_argv);\n");
 	fprintf(fd_tc, "int pan_argc;\n");
 	fprintf(fd_tc, "char **pan_argv;\n");
     fprintf(fd_tc, "void (*spin_after_argparse)(int argc, char **argv);\n");
