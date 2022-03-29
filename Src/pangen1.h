@@ -5340,14 +5340,6 @@ static const char *Code2d[] = {
 	"			  }",
 	"			  break;",
 	"		case 'J': like_java = 1; break; /* Klaus Havelund */",
-	"		case 'K':",
-	"			  if (argv[1][2]) {",
-	"					fprintf(stderr, \"Unrecognized option %%s\", argv[1]);",
-	"					exit(1);",
-	"			  }",
-	"			  argv++;"
-	"			  argc--;"
-	"			  \tglobals_argv = argv[1];\n"
 	"#ifdef BITSTATE",
 	"		case 'k': hfns = atoi(&argv[1][2]); break;",
 	"#endif",
@@ -5627,8 +5619,6 @@ static const char *Code2d[] = {
 	"		}",
 	"		argc--; argv++;",
 	"	}",  
-	"	if (spin_get_globals)",
-	"		spin_get_globals(globals_argv);",
 	"	if (spin_after_argparse)",
 	"		spin_after_argparse(argc, argv);",
 	"#if defined(BFS_PAR) && defined(BFS_SEP_HASH)",
