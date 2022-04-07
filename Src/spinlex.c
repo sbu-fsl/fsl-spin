@@ -758,6 +758,7 @@ c_add_def(FILE *fd)	/* 3 - called in plunk_c_fcts() */
 		fprintf(fd, "\t\tc_stack_before(p_t_r);\n");
 		for (r = c_tracked; r; r = r->nxt)
 		{	if (r->ival == ZS) continue;
+	
 			fprintf(fd, "\tif(%s)\n", r->s->name);
 			fprintf(fd, "\t\tmemcpy(p_t_r, %s, %s);\n",
 				r->s->name, r->t->name);
